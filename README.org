@@ -2,18 +2,17 @@
 
 * Arch Linux
 ** 加速 makepkg 的 git clone
-方法：将 =/usr/share/makepkg/source/git.sh= 中的
-~git clone~ 改成 ~git clone --filter=blob:none~ 。
-即：
+方法：
+将 =/usr/share/makepkg/source/git.sh= 即 [[https://unix.stackexchange.com/questions/154919/how-to-modify-a-pkgbuild-which-uses-git-sources-to-pull-only-a-shallow-clone][makepkg 所使用的 git 脚本文件]]中的 ~git clone~ 改成 ~git clone --filter=blob:none~ 。
+
+一段达成此目的且满足幂等的命令可以这样写：
 #+begin_src bash
 t=/usr/share/makepkg/source/git.sh
 sudo sed -i "s/git clone -s/git clone --filter=blob:none -s/g" $t
 sudo sed -i "s/git clone --mirror/git clone --filter=blob:none --mirror/g" $t
 #+end_src
 
-（注： ~--filter=blob:none~ 类似于 ~--depth=1~ ，只是它不会像后者那样具有很多副作用。）
+（注： ~--filter=blob:none~ 类似于 ~--depth=1~ ，只是它不会像后者那样具有很多[[https://zhuanlan.zhihu.com/p/597688197][副作用]]。）
 
-相关链接：
-- https://unix.stackexchange.com/questions/154919/how-to-modify-a-pkgbuild-which-uses-git-sources-to-pull-only-a-shallow-clone
-- https://zhuanlan.zhihu.com/p/597688197
+
 
