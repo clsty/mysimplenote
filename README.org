@@ -31,3 +31,8 @@ sudo sed -i "s/git clone --mirror/git clone --filter=blob:none --mirror/g" $t
 	 :files (:defaults "tutor-sc.txt")
 	 :url "https://github.com/clsty/evil-tutor-sc.git"))
 #+end_src
+
+* GitHub
+** 自述文档（README）
+一些冷知识：
+- README（按优先级从高到低排序）可以位于仓库的 =.github/= 、根目录、=docs/= 。
