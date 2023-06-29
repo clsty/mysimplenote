@@ -6,6 +6,9 @@
 
 * 一、绘图
 ditaa：不支持
+-----------------
+=TEST-AREA-BEGIN=
+
 #+begin_src ditaa
   +---------+
   | cBLU    |
@@ -16,7 +19,13 @@ ditaa：不支持
   +----+----+
 #+end_src
 
+=TEST-AREA-END=
+-----------------
+
 mermaid：支持
+-----------------
+=TEST-AREA-BEGIN=
+
 #+begin_src mermaid
 graph LR
 MS[Mirror Server] <--> PN
@@ -24,19 +33,36 @@ PN([Protected Network]) --> PS
 PS[Proxy Server] --> IN([Internet])
 #+end_src
 
+=TEST-AREA-END=
+-----------------
+
 * 二、嵌入其他格式化文本
------
 LaTeX：部分“支持”。
 
 “支持”：
+-----------------
+=TEST-AREA-BEGIN=
+
 \ast{} \alpha \beta \phi
 $\varphi$
 
+=TEST-AREA-END=
+-----------------
+
 不支持：
+-----------------
+=TEST-AREA-BEGIN=
+
 \LaTeX{}
+
+=TEST-AREA-END=
+-----------------
 
 完全不渲染：
 - =#+BEGIN_LATEX= 的这种代码块。
+-----------------
+=TEST-AREA-BEGIN=
+
 #+BEGIN_LATEX
 \section{Section Title}
 
@@ -49,11 +75,33 @@ Another line within this block.
 
 Greek characters \alpha \beta \phi \LaTeX{}  $\varphi$
 #+END_LATEX
------
+
+=TEST-AREA-END=
+-----------------
+
 HTML：支持。
+-----------------
+=TEST-AREA-BEGIN=
+
 #+html: <details>
 文本一
 #+html: <summary>总结</summary>
 文本二
 #+html: </details>
 文本三
+
+=TEST-AREA-END=
+-----------------
+
+-----------------
+=TEST-AREA-BEGIN=
+
+#+BEGIN_HTML
+<strong>This is strong</strong>.
+<em>This</em> is emphasized.
+Heres is a web reference: <a href="https://Karl-Voit.at">link</a>
+<!-- this is a comment -->
+#+END_HTML
+
+=TEST-AREA-END=
+-----------------
