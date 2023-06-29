@@ -23,3 +23,15 @@ MS[Mirror Server] <--> PN
 PN([Protected Network]) --> PS
 PS[Proxy Server] --> IN([Internet])
 #+end_src
+
+* 二、嵌入其他格式化文本
+-----
+LaTeX：不支持。
+-----
+HTML：支持。
+#+html: <details>
+文本一
+#+html: <summary>总结</summary>
+文本二
+#+html: </details>
+文本三
