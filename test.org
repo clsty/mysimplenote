@@ -1,0 +1,16 @@
+#+begin_src ditaa
+  +---------+
+  | cBLU    |
+  |         |
+  |    +----+
+  |    |cPNK|
+  |    |    |
+  +----+----+
+#+end_src
+
+#+begin_src mermaid
+graph LR
+MS[Mirror Server] <--> PN
+PN([Protected Network]) --> PS
+PS[Proxy Server] --> IN([Internet])
+#+end_src

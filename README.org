@@ -14,5 +14,20 @@ sudo sed -i "s/git clone --mirror/git clone --filter=blob:none --mirror/g" $t
 
 （注： ~--filter=blob:none~ 类似于 ~--depth=1~ ，只是它不会像后者那样具有很多[[https://zhuanlan.zhihu.com/p/597688197][副作用]]。）
 
-
-
+* Emacs
+** quelpa 安装插件一例
+#+begin_src elisp
+(use-package quelpa
+ :ensure t
+ :commands quelpa
+ :custom
+ (quelpa-git-clone-depth 1)
+ (quelpa-self-upgrade-p nil)
+ (quelpa-update-melpa-p nil)
+ (quelpa-checkout-melpa-p nil))
+(quelpa
+ '(evil-tutor-sc
+	 :fetcher git
+	 :files (:defaults "tutor-sc.txt")
+	 :url "https://github.com/clsty/evil-tutor-sc.git"))
+#+end_src
