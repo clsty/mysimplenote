@@ -30,10 +30,13 @@ LaTeX：部分“支持”。
 
 “支持”：
 \ast{} \alpha \beta \phi
+$\varphi$
 
 不支持：
-\LaTeX{}  $\varphi$
+\LaTeX{}
 
+完全不渲染：
+- =#+BEGIN_LATEX= 的这种代码块。
 #+BEGIN_LATEX
 \section{Section Title}
 
