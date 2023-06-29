@@ -26,7 +26,26 @@ PS[Proxy Server] --> IN([Internet])
 
 * 二、嵌入其他格式化文本
 -----
-LaTeX：不支持。
+LaTeX：部分“支持”。
+
+“支持”：
+\ast{} \alpha \beta \phi
+
+不支持：
+\LaTeX{}  $\varphi$
+
+#+BEGIN_LATEX
+\section{Section Title}
+
+This is \emph{emphasized} and $y=x^2$ is an equation.
+
+An example in an LATEX block.
+Another line within this block.
+
+\alpha $x=42y$
+
+Greek characters \alpha \beta \phi \LaTeX{}  $\varphi$
+#+END_LATEX
 -----
 HTML：支持。
 #+html: <details>
