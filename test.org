@@ -6,14 +6,20 @@
 - GitHub 官方的[[https://docs.github.com/en/get-started/writing-on-github/working-with-advanced-formatting/creating-diagrams][绘图指南]]
 
 * 格式化文本
-标记两侧空格：必须加空格（已知唯一可以不加空格的方法是嵌入 html）。
+标记两侧空格：必须加空格，或嵌入 html 代码块。
 -----------------
 =TEST-AREA-BEGIN=
 
 - 这是 *粗体文本（两侧加空格）* 。
 - 这是*粗体文本（两侧无空格）*。
 - 这是​*粗体文本（两侧零宽空格）*​。
-- 这是@@html:<strong>粗体文本（嵌入 html）</strong>@@。
+- 这是@@html:<strong>粗体文本（嵌入行内 html）</strong>@@。
+
+这
+#+BEGIN_HTML
+是<strong>粗体文本（嵌入 html 代码块）</strong>——
+#+END_HTML
+。
 
 =TEST-AREA-END=
 -----------------
