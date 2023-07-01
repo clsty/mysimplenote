@@ -7,6 +7,7 @@
 
 * 格式化文本
 标记两侧空格：必须加空格，或嵌入 html 代码块。
+（据 org-ruby 的 TODO 和 history，嵌入行内 html 在 0.9.9 版本（2014 年）就做好了，但 github 至今仍在使用 0.9.1）
 -----------------
 =TEST-AREA-BEGIN=
 
@@ -14,6 +15,7 @@
 - 这是*粗体文本（两侧无空格）*。
 - 这是​*粗体文本（两侧零宽空格）*​。
 - 这是@@html:<strong>粗体文本（嵌入行内 html）</strong>@@。
+- 这是 @@html:<strong>粗体文本（嵌入行内 html，两侧加空格）</strong>@@ 。
 
 这
 #+BEGIN_HTML
