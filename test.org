@@ -16,6 +16,7 @@
 - 这是​*粗体文本（两侧零宽空格）*​。
 - 这是@@html:<strong>粗体文本（嵌入行内 html）</strong>@@。
 - 这是 @@html:<strong>粗体文本（嵌入行内 html，两侧加空格）</strong>@@ 。
+- 这是​@@html:<strong>粗体文本（嵌入行内 html，两侧加空格）</strong>@@​。
 
 这
 #+BEGIN_HTML
