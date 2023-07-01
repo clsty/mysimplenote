@@ -7,26 +7,18 @@
 - GitHub 官方的[[https://docs.github.com/en/get-started/writing-on-github/working-with-advanced-formatting/creating-diagrams][绘图指南]]
 
 * 格式化文本
-标记两侧空格：必须加空格，或嵌入 html 代码块。
+标记两侧空格：必须加空格，或嵌入 html。
 # https://github.com/github/markup/pull/326 据这个，实际上已经是 0.9.9 了，且行内 html 也应已可用。
 -----------------
 =TEST-AREA-BEGIN=
 
-@@html:<b>123</b>@@
-@@html:<b>@@123@@html:</b>@@
-
 - 这是 *粗体文本（两侧加空格）* 。
 - 这是*粗体文本（两侧无空格）*。
 - 这是​*粗体文本（两侧零宽空格）*​。
-- 这是@@html:<strong>粗体文本（嵌入行内 html）</strong>@@。
-- 这是 @@html:<strong>粗体文本（嵌入行内 html，两侧加空格）</strong>@@ 。
-- 这是​@@html:<strong>粗体文本（嵌入行内 html，两侧零宽空格）</strong>@@​。
-
-这
+- 这是@@html:<strong>@@粗体文本（嵌入行内 html）@@html:</strong>@@。
 #+BEGIN_HTML
-是<strong>粗体文本（嵌入 html 代码块）</strong>——
+这是<strong>粗体文本（嵌入 html 代码块）</strong>。
 #+END_HTML
-。
 
 =TEST-AREA-END=
 -----------------
