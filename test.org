@@ -4,7 +4,18 @@
   - 从这里可知，GitHub 对 org-mode 的支持是通过（旧版）[[https://kgithub.com/wallyqs/org-ruby][org-ruby]] 实现的。
 - GitHub 官方的[[https://docs.github.com/en/get-started/writing-on-github/working-with-advanced-formatting/creating-diagrams][绘图指南]]
 
-* 一、绘图
+* 格式化文本
+标记两侧空格：
+-----------------
+=TEST-AREA-BEGIN=
+
+- 这是 *粗体文本（两侧加空格）* 。
+- 这是*粗体文本（两侧无空格）*。
+- 这是​*粗体文本（两侧零宽空格）*​。
+
+=TEST-AREA-END=
+-----------------
+* 绘图
 ditaa：不支持
 -----------------
 =TEST-AREA-BEGIN=
@@ -36,7 +47,7 @@ PS[Proxy Server] --> IN([Internet])
 =TEST-AREA-END=
 -----------------
 
-* 二、嵌入其他格式化文本
+* 嵌入其他格式化文本
 LaTeX：部分“支持”。
 
 “支持”：
@@ -99,7 +110,7 @@ HTML：支持。
 #+BEGIN_HTML
 <strong>This is strong</strong>.
 <em>This</em> is emphasized.
-Heres is a web reference: <a href="https://Karl-Voit.at">link</a>
+Heres is a web reference: <a href="https://github.com/clsty">link</a>
 <!-- this is a comment -->
 #+END_HTML
 
