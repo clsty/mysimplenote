@@ -33,9 +33,8 @@ sudo sed -i "s/git clone --mirror/git clone --filter=blob:none --mirror/g" $t
 #+end_src
 
 * GitHub
-** 自述文档（README）
 一些冷知识：
-- 自述文档（按优先级从高到低排序）可以位于仓库的 =.github/= 、根目录、=docs/= 。
+- 自述文档（README）（按优先级从高到低排序）可以位于仓库的 =.github/= 、根目录、=docs/= 。
 - GitHub 支持渲染的文档格式见 [[https://github.com/github/markup][github/markup]]。
   - 对 org-mode 的测试见 [[./test.org]]。
 
