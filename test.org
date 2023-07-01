@@ -2,14 +2,17 @@
 - 一份更丰富（但有些过时）的测试： [[https://github.com/novoid/github-orgmode-tests][github-orgmode-tests]]
 相关链接：
 - GitHub 官方的标记语言支持：[[https://github.com/github/markup][github/markup]]
+  - 各依赖库的版本列表：https://github.com/github/markup/master/Gemfile
   - 对 org-mode 的支持是通过（旧版）[[https://github.com/wallyqs/org-ruby][org-ruby]] 实现的。
 - GitHub 官方的[[https://docs.github.com/en/get-started/writing-on-github/working-with-advanced-formatting/creating-diagrams][绘图指南]]
 
 * 格式化文本
 标记两侧空格：必须加空格，或嵌入 html 代码块。
-# （据 org-ruby 的 TODO 和 history，嵌入行内 html 在 0.9.9 版本（2014 年）就做好了，但 github 至今仍在使用 0.9.1）
+# https://github.com/github/markup/pull/326 据这个，实际上已经是 0.9.9 了，且行内 html 也应已可用。
 -----------------
 =TEST-AREA-BEGIN=
+
+@@html:<text>@@
 
 - 这是 *粗体文本（两侧加空格）* 。
 - 这是*粗体文本（两侧无空格）*。
