@@ -1,10 +1,12 @@
-  ---
+#  ---
   :Tags:
     "*":
       :open: big
       :close: big
 
-这里用于测试 GitHub 对一些 org-mode 文段的支持能力。
+# 以上是 org-ruby 的自定义 marker 的功能，此例中，去掉注释后可以将 * 变成放大字体效果。若测试失败，则应当表示这是 org-ruby 新版功能，而 github 还未跟进。
+
+这里用于测试 GitHub 对一些 *org-mode* 文段的支持能力。
 - 一份更丰富（但有些过时）的测试： [[https://github.com/novoid/github-orgmode-tests][github-orgmode-tests]]
 相关链接：
 - GitHub 官方的标记语言支持：[[https://github.com/github/markup][github/markup]]

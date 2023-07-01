@@ -36,4 +36,7 @@ sudo sed -i "s/git clone --mirror/git clone --filter=blob:none --mirror/g" $t
 ** 自述文档（README）
 一些冷知识：
 - 自述文档（按优先级从高到低排序）可以位于仓库的 =.github/= 、根目录、=docs/= 。
-- 已知，自述文档至少支持 =README.md= （Markdown，这也是最常见的）、 =README.org= （Emacs Org）、 =README.txt= （纯文本）。
+- GitHub 支持渲染的文档格式见 [[https://github.com/github/markup][github/markup]]。
+
+* shell
+test 与 if 所使用的 =[ ]= 判断语法似乎是相同的，例如 =if ! test -e $foo= 与 =if [ ! -e $target ]= 效果相同。
