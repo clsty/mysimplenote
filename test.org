@@ -1,3 +1,9 @@
+  ---
+  :Tags:
+    "*":
+      :open: big
+      :close: big
+
 这里用于测试 GitHub 对一些 org-mode 文段的支持能力。
 - 一份更丰富（但有些过时）的测试： [[https://github.com/novoid/github-orgmode-tests][github-orgmode-tests]]
 相关链接：
