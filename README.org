@@ -16,6 +16,18 @@ sudo sed -i "s/git clone --mirror/git clone --filter=blob:none --mirror/g" $t
 ** alist
 *** 安装
 从 aur 安装 =alist= 或 =alist-bin= 即可。
+
+安装完毕会提示如下信息：
+#+begin_example
+from alist 3.9.2-3, the alist user is used to run this service
+if you are upgrading from a previous version
+you have to run  the following commands in green only once
+ sudo chown -R alist:alist /var/lib/alist
+ sudo chown -R alist:alist /var/log/alist
+ sudo chown -R alist:alist /etc/alist
+ sudo chown -R alist:alist /var/cache/alist
+and chown any other local files that are served by alist
+#+end_example
 *** 密码问题
 网上很多使用例（教程等）往往使用一键脚本或 docker 进行部署，具有相同的默认密码（如 =admin= 、 =password= 等）。
 
