@@ -13,6 +13,21 @@ sudo sed -i "s/git clone --mirror/git clone --filter=blob:none --mirror/g" $t
 #+end_src
 
 （注： ~--filter=blob:none~ 类似于 ~--depth=1~ ，只是它不会像后者那样具有很多[[https://zhuanlan.zhihu.com/p/597688197][副作用]]。）
+** alist
+*** 安装
+从 aur 安装 =alist= 或 =alist-bin= 即可。
+*** 密码问题
+网上很多使用例（教程等）往往使用一键脚本或 docker 进行部署，具有相同的默认密码（如 =admin= 、 =password= 等）。
+
+但是，如果你是在 Arch Linux 下（或许别的发行版也适用，未测试），则当你运行 =alist server= 时，它会自动生成一个初始密码。如果命令行没有显示，你可以使用 alist admin 查看（配置目录为当前工作目录或家目录下的 =data/= ）。
+
+而如果使用 systemd 服务（ =sudo systemctl enable --now alist= ），那么 alist 服务（此配置文件为 =/usr/lib/systemd/system/alist.service= ）被默认配置的启动命令是 =/usr/bin/alist server --data /var/lib/alist= ，因此你查看密码的方式应当是：
+#+begin_src bash
+  sudo alist admin --data /var/lib/alist
+#+end_src
+
+如果你不这么做，而是直接使用 =alist admin= 来查看密码，你很可能会发现即使你复制粘贴密码它还是提示你密码不正确（“为什么 alist 密码正确还是提示密码错误”）。
+当然，你也可以修改 systemd 的服务配置文件，将 =--data= 指向你想要的配置目录，但注意用包管理器给 alist 升级时此文件会被覆盖。
 
 * Emacs
 ** quelpa 安装插件一例
