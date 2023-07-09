@@ -1,5 +1,14 @@
 #+title: 一些简单的个人笔记 by clsty
 
+* Shell
+** iconv 批量转 ANSI 到 UTF-8
+#+begin_src bash
+  # 先将当前目录的目录结构复制到上级目录下的temp目录
+    rsync -av --include '*/' --exclude '*' ./ ../temp/
+  # 再批量地将当前目录中以 .txt 结尾的文件从编码GBK转UTF-8，但是报错的就不转换了
+    for i in $(fd .txt);do iconv -f GBK -t UTF-8 "$i" -o ../temp/"$i"||rm ../temp/"$i";done
+#+end_src
+
 * Arch Linux
 ** 加速 makepkg 的 git clone
 方法：
