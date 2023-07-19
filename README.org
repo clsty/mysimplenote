@@ -86,8 +86,9 @@ rclone 提供了许多子命令，比如复制，可直接使用 =rclone copyto=
 - vendor: other
 - user: 就是 alist 的用户名。
 - password: 就是 alist 的密码。
-再添加 cronie 挂载任务：
+最后配置cronie：
 #+begin_src bash
+  sudo systemctl enable --now cronie
   mkdir ~/alist
   mkdir -p ~/.local/bin
   echo '#!/bin/bash
