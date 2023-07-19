@@ -24,7 +24,7 @@ sudo sed -i "s/git clone --mirror/git clone --filter=blob:none --mirror/g" $t
 （注： ~--filter=blob:none~ 类似于 ~--depth=1~ ，只是它不会像后者那样具有很多[[https://zhuanlan.zhihu.com/p/597688197][副作用]]。）
 ** alist
 *** 安装
-从 aur 安装 =alist= 或 =alist-bin= 即可。
+从 aur 安装 =alist-bin= （ =alist= 已过时，不再推荐）即可。
 
 安装完毕会提示如下信息：
 #+begin_example
@@ -37,18 +37,70 @@ you have to run  the following commands in green only once
  sudo chown -R alist:alist /var/cache/alist
 and chown any other local files that are served by alist
 #+end_example
-*** 密码问题
+*** 配置文件与密码
 网上很多使用例（教程等）往往使用一键脚本或 docker 进行部署，具有相同的默认密码（如 =admin= 、 =password= 等）。
 
-但是，如果你是在 Arch Linux 下（或许别的发行版也适用，未测试），则当你运行 =alist server= 时，它会自动生成一个初始密码。如果命令行没有显示，你可以使用 alist admin 查看（配置目录为当前工作目录或家目录下的 =data/= ）。
+但是，如果你是在 Arch Linux 下（或许别的发行版也适用，未测试），则当你（注：不推荐这种方法！）直接运行 alist 时，它会自动生成一个初始密码。如果命令行没有显示，你可以使用 alist admin 查看（配置目录为当前工作目录或家目录下的 =data/= ）。
 
-而如果使用 systemd 服务（ =sudo systemctl enable --now alist= ），那么 alist 服务（此配置文件为 =/usr/lib/systemd/system/alist.service= ）被默认配置的启动命令是 =/usr/bin/alist server --data /var/lib/alist= ，因此你查看密码的方式应当是：
+而如果使用 systemd 服务（注：推荐此方法，命令是 =sudo systemctl enable --now alist= ），那么 alist 服务（此配置文件为 =/usr/lib/systemd/system/alist.service= ）被默认配置的启动命令是 =/usr/bin/alist server --data /var/lib/alist= ，因此你查看密码的方式应当是：
 #+begin_src bash
   sudo alist admin --data /var/lib/alist
 #+end_src
 
 如果你不这么做，而是直接使用 =alist admin= 来查看密码，你很可能会发现即使你复制粘贴密码它还是提示你密码不正确（“为什么 alist 密码正确还是提示密码错误”）。
 当然，你也可以修改 systemd 的服务配置文件，将 =--data= 指向你想要的配置目录，但注意用包管理器给 alist 升级时此文件会被覆盖。
+
+默认的端口为 5244。也即，在浏览器地址栏输入 [[http://0.0.0.0:5244]] 即可进入 alist 的管理页面。
+
+*** 本地使用
+除了直接在浏览器中使用外，alist 提供了 webdav 以便在本地进行操作，具体见其[[https://alist.nn.ci/zh/guide/webdav.html][文档]]。
+
+在 Linux 下可使用 rclone 或 dav2fs 来访问此 webdav 服务。
+
+**** rclone
+rclone 提供了许多子命令，比如复制，可直接使用 =rclone copyto= 在本地与 rclone 远端（remote）之间复制文件。
+
+这里特别提一下 mount 子命令，可以挂载 rclone 远端到本地目录。
+它也常常在网上被提到，但请务必注意：
+*rclone mount 在写入文件（或者说，上传文件）到远端的稳定性上，远不如 =rclone copyto= 等直接的命令！！！*
+这主要是由于各大网盘总是会做一些针对第三方工具的限制。
+具体的现象例如，当你写入一个文件，表面上成功了，但直接打开网盘后，网盘里却根本没有出现此文件。
+如果你的网盘很良心（或者说你自己搭建一个网盘，这方面你可以用 seafile 等），没有做这种限制，那么你大可以随意。
+
+总之，一般情况下，仅建议以只读方式进行挂载。
+
+下面给出在 Arch Liunx 下（其他 Linux 发行版同理），将 alist 用 rclone 和 crontab 自动只读挂载到本地的一个例子。
+
+首先安装相关软件（crontab 由 cronie 提供 ，rclone mount 调用的 fusermount 由 fuse3 提供）。
+#+begin_src bash
+  sudo pacman -S --needed cronie rclone fuse3
+#+end_src
+再配置 rclone：
+#+begin_src bash
+  rclone config
+#+end_src
+此时进入 rclone 的配置编辑界面。添加一个远端：
+- name: alist
+- type: webdav
+- url: =http://0.0.0.0:5244/dav=
+- vendor: other
+- user: 就是 alist 的用户名。
+- password: 就是 alist 的密码。
+再添加 cronie 挂载任务：
+#+begin_src bash
+  mkdir ~/alist
+  mkdir -p ~/.local/bin
+  echo '#!/bin/bash
+  /usr/bin/rclone mount --read-only alist: ~/alist &' > ~/.local/bin/mount-alist.sh
+  chmod +x ~/.local/bin/mount-alist.sh
+  cronie -e
+#+end_src
+此时弹出一个编辑器（取决于 =$EDITOR= 变量）用于编辑 crontab 任务的配置文件，在其中输入以下内容（注意最后一行是空的）：
+#+begin_src crontab
+  @reboot sh ~/.local/bin/mount-alist.sh
+  
+#+end_src
+保存即可。
 
 * Emacs
 ** quelpa 安装插件一例
@@ -73,3 +125,13 @@ and chown any other local files that are served by alist
 - 自述文档（README）（按优先级从高到低排序）可以位于仓库的 =.github/= 、根目录、=docs/= 。
 - GitHub 支持渲染的文档格式见 [[https://github.com/github/markup][github/markup]]。
   - 对 org-mode 的测试见 [[./test.org]]。
+
+* Firefox
+** Firefox 配置文件中登录信息的所在
+注：此方法仅在 Firefox 115.0.2 版本上进行了测试。
+
+如果你的 Firefox 的某个 profile 损坏，启动 Firefox 时会卡住，可以使用 =-p= 参数打开 profile 管理器来新建一个 profile。
+但是，假如损坏的那个 profile 含有某些登录信息（账户密码），你可能会想要把它迁移到新的 profile 中。
+
+因此，你需要复制 profile 目录（为 =~/.mozilla/firefox= 下的某个目录）中的以下文件：
+=key4.db= 、 =logins.json= 、 =signedInUser.json= 。
