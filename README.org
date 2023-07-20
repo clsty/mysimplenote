@@ -55,14 +55,14 @@ and chown any other local files that are served by alist
 *** 本地使用
 除了直接在浏览器中使用外，alist 提供了 webdav 以便在本地进行操作，具体见其[[https://alist.nn.ci/zh/guide/webdav.html][文档]]。
 
-在 Linux 下可使用 rclone 或 dav2fs 来访问此 webdav 服务。
+在 Linux 下可使用 rclone 或 [[https://wiki.archlinux.org/title/Davfs2][davfs2]] 来访问此 webdav 服务。
 
 **** rclone
 rclone 提供了许多子命令，比如复制，可直接使用 =rclone copyto= 在本地与 rclone 远端（remote）之间复制文件。
 
 这里特别提一下 mount 子命令，可以挂载 rclone 远端到本地目录。
 它也常常在网上被提到，但请务必注意：
-*rclone mount 在写入文件（或者说，上传文件）到远端的稳定性上，远不如 =rclone copyto= 等直接的命令！！！*
+*rclone mount 在写入文件（或者说，上传文件）到远端的稳定性上，远不如 ~rclone copyto~ 等直接的命令！！！*
 这主要是由于各大网盘总是会做一些针对第三方工具的限制。
 具体的现象例如，当你写入一个文件，表面上成功了，但直接打开网盘后，网盘里却根本没有出现此文件。
 如果你的网盘很良心（或者说你自己搭建一个网盘，这方面你可以用 seafile 等），没有做这种限制，那么你大可以随意。
@@ -123,11 +123,13 @@ rclone 提供了许多子命令，比如复制，可直接使用 =rclone copyto=
 
 * GitHub
 一些冷知识：
-- 自述文档（README）（按优先级从高到低排序）可以位于仓库的 =.github/= 、根目录、=docs/= 。
+- 自述文档（README）（按优先级从高到低排序）可以位于仓库的 =.github/= 、根目录、 =docs/= 。
 - GitHub 支持渲染的文档格式见 [[https://github.com/github/markup][github/markup]]。
   - 对 org-mode 的测试见 [[./test.org]]。
 
 * Firefox
+** 容器
+想要用好容器，除了安装官方的 [[https://addons.mozilla.org/en-US/firefox/addon/multi-account-containers][Firefox Multi-Account Containers]]以外，这里还推荐安装 [[https://addons.mozilla.org/en-US/firefox/addon/container-bookmarks/][Container Bookmarks]]，以便从书签快速地以不同的指定容器打开同一网站，从而实现更实用的多帐号共存。
 ** Firefox 配置文件中登录信息的所在
 注：此方法仅在 Firefox 115.0.2 版本上进行了测试。
 
