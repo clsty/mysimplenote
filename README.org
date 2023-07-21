@@ -128,9 +128,45 @@ rclone mount 在写入文件（或者说，上传文件）到远端的稳定性�
   - 对 org-mode 的测试见 [[./test.org]]。
 
 * Firefox
-** 容器
-想要用好容器，除了安装官方的 [[https://addons.mozilla.org/en-US/firefox/addon/multi-account-containers][Firefox Multi-Account Containers]]以外，这里还推荐安装 [[https://addons.mozilla.org/en-US/firefox/addon/container-bookmarks/][Container Bookmarks]]，以便从书签快速地以不同的指定容器打开同一网站，从而实现更实用的多帐号共存。
-** Firefox 配置文件中登录信息的所在
+** 附加组件（add-ons）
+*** 主题
+*** 扩展
+以下给出对若干扩展进行简单测试的一些记录。
+
+请注意，时效性可能不强。
+也即，它很可能不完全适用于你看到此文时这些扩展的实际情形。
+
+若想补充，可提交 PR。
+**** 侧边标签栏
+- [[https://addons.mozilla.org/en-US/firefox/addon/sidebery/][Sidebery]]：
+  - 可显示出标签页所在的容器颜色。
+  - 允许多面板（panel）。
+  - 以缩进标记出标签之间的先后关系。
+- [[https://addons.mozilla.org/en-US/firefox/addon/grasshopper-urls][Grasshopper]]：待测试。
+**** 书签容器
+背景：
+- 想要用好容器，除了安装官方的 [[https://addons.mozilla.org/en-US/firefox/addon/multi-account-containers][Firefox Multi-Account Containers]] 以外，我们还面临一个问题：
+假如你真的需要在同一网站上使用多个账号，默认情况下，你需要在标签页或什么地方用右键菜单切换容器。
+这无疑很麻烦。
+- 那么，有没有什么扩展，可以让你的书签中包含“以指定容器打开”的这种信息呢？
+答案是肯定的。这里，我简单测试了若干实现此功能的扩展。
+
+- [[https://addons.mozilla.org/en-US/firefox/addon/containmarks][ContainMarks]]（推荐）：添加过程很方便，也确实可用。
+  - 对书签条目的影响：在 url 前面添加 =about:xxx:= ，其中 =xxx= 是一段随机字符串。
+- [[https://addons.mozilla.org/en-US/firefox/addon/container-bookmarks/][Container Bookmarks]]：确实可用，但添加过程过于繁琐。
+  - 对书签条目的影响：在 url 末尾添加 =#xxx= 的参数。
+- [[https://github.com/vances678/ContainerBookmarks][Container Bookmarks]]（是的，与前一个同名）：添加过程很方便，但似乎因为需要访问 [[s2.googleusercontent.com]] 而导致在国内无法使用（会报错）。
+  - 对书签条目的影响：在 url 前面添加 =moz-extension://xxx...= 的一大长串。
+**** 其他扩展
+- 待探索：
+  - https://addons.mozilla.org/en-US/firefox/addon/conex/
+**** 新标签页
+- [[https://addons.mozilla.org/en-US/firefox/addon/ya-bookmarks-on-new-tab][Bookmarks on New Tab]]
+  - 启动速度超快。
+  - 存在一个严重缺陷：会把文件夹与书签条目混在一起，干扰使用。
+- [[https://addons.mozilla.org/en-US/firefox/addon/bookmarked-speeddial][Bookmarked Speed Dial]]
+  - 启动速度较慢。
+** 密码等登录信息的所在文件
 注：此方法仅在 Firefox 115.0.2 版本上进行了测试。
 
 如果你的 Firefox 的某个 profile 损坏，启动 Firefox 时会卡住，可以使用 =-p= 参数打开 profile 管理器来新建一个 profile。
@@ -138,3 +174,29 @@ rclone mount 在写入文件（或者说，上传文件）到远端的稳定性�
 
 因此，你需要复制 profile 目录（为 =~/.mozilla/firefox= 下的某个目录）中的以下文件：
 =key4.db= 、 =logins.json= 、 =signedInUser.json= 。
+** 修改限制扩展修改的域名
+Firefox 对某些域名进行了保护，以防其被扩展修改，这无疑增强了（使用了任何你无法完全信任的扩展时的）安全性，却降低了便利性。
+比如，你将无法在 [[mozilla.org]] 使用 Dark Reader。
+
+如果你能够完全信任你的所有扩展，则你可以：
+- 访问 [[about:config]] 。
+- 搜索 =extensions.webextensions.restrictedDomains= 。
+- 其默认值为
+  #+begin_example
+  accounts-static.cdn.mozilla.net,accounts.firefox.com,addons.cdn.mozilla.net,addons.mozilla.org,api.accounts.firefox.com,content.cdn.mozilla.net,discovery.addons.mozilla.org,install.mozilla.org,oauth.accounts.firefox.com,profile.accounts.firefox.com,support.mozilla.org,sync.services.mozilla.com,autoatendimento.bb.com.br,ibpf.sicredi.com.br,ibpj.sicredi.com.br,internetbanking.caixa.gov.br,www.ib12.bradesco.com.br,www2.bancobrasil.com.br
+  #+end_example
+  按需修改即可，比如改为
+  #+begin_example
+  accounts-static.cdn.mozilla.net,accounts.firefox.com,addons.cdn.mozilla.net,api.accounts.firefox.com,content.cdn.mozilla.net,install.mozilla.org,sync.services.mozilla.com
+  #+end_example
+- 再搜索 =privacy.resistFingerprinting.block_mozAddonManager= ，将其值改为 true。
+以上。此时大多数扩展应当对 [[mozilla.org]] 等域名可用了。
+
+但是，部分扩展仍需进一步设置，比如 Dark Reader，因为它默认自行检测域名是否被限制，即使此时已经取消了限制，它也不会尝试运行。
+对于 Dark Reader 的设置方法：
+- 依次点击 Dark Reader 扩展图标 -> Dev tools -> Preview new design。
+- 再次点击 Dark Reader 扩展图标，此时的交互界面应当已经改变。
+- 点击 Settings -> Site list -> Enable on restricted pages。
+此时 Dark Reader 在 [[mozilla.org]] 上就可用了。
+当然，交互界面也变成新的了，如果你是老用户，你可能需要适应一下。
+注意如果切回老界面，则此设置会立即失效。
