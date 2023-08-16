@@ -1,6 +1,17 @@
 #+title: 一些简单的个人笔记 by clsty
+注：本笔记可能存在时效性问题、主观问题甚至事实错误等，请酌情参考；也欢迎发 PR 和 issue。
+* Linux
+** Rsync
+*** rsync 的 -a
+-a 即 --archive，它相当于 -rlptgoD ，分别解释如下：
+1. -r（--recursive）：以递归方式复制文件。这将使rsync复制目录及其所有内容，包括子目录和文件。
+2. -l（--links）：保留符号链接。当源目录中存在符号链接时，该选项将复制符号链接的目标文件而不是符号链接本身。
+3. -p（--perms）：保留文件的权限。使用该选项将保留文件的所有权和读/写/执行权限。
+4. -t（--times）：保留文件的时间戳。使用该选项将复制源文件的修改时间和访问时间到目标文件。
+5. -g（--group）：保留文件所属组。通过指定该选项，rsync将保留文件所属组而不进行更改。
+6. -o（--owner）：保留文件所有者。该选项保留每个文件的所有者身份而不进行更改。
+7. -D：保留特殊设备和特殊文件。
 
-* Shell
 ** iconv 批量转 ANSI 到 UTF-8
 #+begin_src bash
   # 先将当前目录的目录结构复制到上级目录下的temp目录
@@ -8,8 +19,14 @@
   # 再批量地将当前目录中以 .txt 结尾的文件从编码GBK转UTF-8，但是报错的就不转换了
     for i in $(fd .txt);do iconv -f GBK -t UTF-8 "$i" -o ../temp/"$i"||rm ../temp/"$i";done
 #+end_src
-
+** mount
+*** 强制 umount
+若 umount 时提示“device is busy”，则可能是有进程在占用，可用 =fuser -m <mountpoint>= 来查看，
+再 =fuser -ck <mountpoint>= 结束此进程即可。
+*** 据 fstab 进行自动挂载
+在修改了 fstab 之后，不会立即生效，可用 =mount -av= 来自动挂载。
 * Arch Linux
+Arch Linux 是滚动发行版，这里默认以最新版为例。
 ** 加速 makepkg 的 git clone
 方法：
 将 =/usr/share/makepkg/source/git.sh= 即 [[https://unix.stackexchange.com/questions/154919/how-to-modify-a-pkgbuild-which-uses-git-sources-to-pull-only-a-shallow-clone][makepkg 所使用的 git 脚本文件]]中的 ~git clone~ 改成 ~git clone --filter=blob:none~ 。
@@ -103,6 +120,38 @@ rclone mount 在写入文件（或者说，上传文件）到远端的稳定性�
 #+end_src
 保存即可。
 
+* Debian Linux
+以下以 Debian 12 为例。
+** sudo
+=su= 可能不带必要的环境变量（包括 path 的），因此在 =su root= 之后，使用 =usermod= 等命令时可能会提示 =command not found= 。
+此时最好使用 =su -= 。
+
+Debian 默认没有 wheel 组，而是 sudo 组，所以用 =usermod -aG sudo <username>= 将用户加入该组即可。
+
+** 软件安装
+包管理器：apt。
+*** 部分软件的安装方法举例
+**** fd
+- 地址：[[https://github.com/sharkdp/fd]]
+- 包名： =fd-find=
+- 命令： =fdfind= （注意不是 fd）
+**** qbittorrent-enhanced-edition
+- 地址：[[https://github.com/c0re100/qBittorrent-Enhanced-Edition]]
+- 安装方法：据 [[https://software.opensuse.org//download.html?project=home%3Anikoneko%3Atest&package=qbittorrent-enhanced-nox][Install package home:nikoneko:test / qbittorrent-enhanced-nox]]，依次运行以下命令：
+#+begin_src bash
+echo 'deb http://download.opensuse.org/repositories/home:/nikoneko:/test/Debian_12/ /' | sudo tee /etc/apt/sources.list.d/home:nikoneko:test.list
+curl -fsSL https://download.opensuse.org/repositories/home:nikoneko:test/Debian_12/Release.key | gpg --dearmor | sudo tee /etc/apt/trusted.gpg.d/home_nikoneko_test.gpg > /dev/null
+sudo apt update
+sudo apt install qbittorrent-enhanced-nox
+#+end_src
+其中第二步如果 curl 报错，可以考虑将 https 改为 http。
+**** alist
+- 地址：[[https://github.com/Xhofe/alist]]
+- 安装方法：
+运行
+#+begin_src bash
+curl -fsSL "https://alist.nn.ci/v3.sh"|sudo bash -s install
+#+end_src
 * Emacs
 ** quelpa 安装插件一例
 #+begin_src elisp
@@ -200,3 +249,54 @@ Firefox 对某些域名进行了保护，以防其被扩展修改，这无疑增
 此时 Dark Reader 在 [[mozilla.org]] 上就可用了。
 当然，交互界面也变成新的了，如果你是老用户，你可能需要适应一下。
 注意如果切回老界面，则此设置会立即失效。
+
+** 重定向
+这里所说的重定向插件，不仅是在地址栏或其他方式打开某个网址时的重定向，也是页面中请求资源的重定向（比如图片的链接）。
+
+尝试了 gooreplacer，据其文档，应该是一个很有趣的插件，但很可惜实际测试完全无法使用，很可能是 Firefox 更新而此插件没跟上版本所导致的。
+
+可用的是 HeaderEditor。
+** 禁用 DRM 提示
+Firefox 可以关闭 DRM。但即使关闭了，在打开一些页面（比如 Bilibili 上的某个电影，注意同一页面可能只有第一次才会提示）时，还是可能跳出打开 DRM 的提示。
+
+*** 方法
+这个提示没有直接关闭的方法，但是可以通过修改 =userChrome.css= 来定制 Firefox 的界面来关闭。
+
+具体方法是：
+- 打开 =about:config= ，将 =toolkit.legacyUserProfileCustomizations.stylesheets= 的值设为 true。
+- 在 Firefox 的 profile 目录（可打开 =about:support= 查看 profile directory）下新建 chrome 文件夹。
+- 在 chrome 文件夹下新建 =userChrome.css= 文件。编辑内容为：
+#+begin_src css
+notification-message[value="drmContentDisabled"] {
+    display: none !important;
+}
+#+end_src
+
+注意，开头 *不要* 加
+#+begin_src css
+@namespace url("http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul");
+#+end_src
+虽然它仍然挂在 [[http://kb.mozillazine.org/UserChrome.css]] 这个页面上，但实测加了它反而会导致上面的那个配置无效。
+原因据说是，Firefox 已经从 XUL 更换到更标准的网络技术栈，由于旧的 XUL 命名空间可能不适用于新的 UI 元素，所以这一句可能导致问题。
+
+*** 原理
+这个提示，是 Firefox 用户界面的一部分（即，并不是网页的一部分），所以要对 Firefox 用户界面本身进行修改。
+
+这就要用到 =userChrome.css= 了。当然，得先启用它。
+
+然后，具体的配置内容，如何知道是 ~notification-message[value="drmContentDisabled"]~ 呢？
+
+方法是：F12 打开开发者面板，面板右上方三点里找设置（齿轮图标）。
+再从 Advanced settings 里勾选“Enable browser chrome and add-on debugging toolboxes”和“Enable remote debugging”。
+
+此时再按 =Ctrl+Alt+Shift+I= 来打开 Browser Toolbox，同意调试之后，会发现多出来一个窗口，这个窗口里面就可以找到 Firefox 界面中的元素了（使用方法类似普通的开发者工具即 F12）。
+定位到 drm 相关的，可以发现通知所在的代码部分中有一句：
+#+begin_src html
+<notification-message xmlns="http://www.w3.org/1999/xhtml" message-bar-type="infobar" dismissable="" value="drmContentDisabled" type="info" style="" class="animated"><div></div></notification-message>
+#+end_src
+这就是上面那个配置的依据了。
+
+参考链接：
+- https://icloudnative.io/posts/customize-firefox
+- http://kb.mozillazine.org/UserChrome.css
+- https://support.mozilla.org/zh-CN/questions/1121195
