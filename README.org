@@ -262,6 +262,8 @@ Firefox 对某些域名进行了保护，以防其被扩展修改，这无疑增
 尝试了 gooreplacer，据其文档，应该是一个很有趣的插件，但很可惜实际测试完全无法使用，很可能是 Firefox 更新而此插件没跟上版本所导致的。
 
 可用的是 HeaderEditor。
+** 跳过下载文件的最后几秒停顿
+在 about:config 中找到 =browser.safebrowsing.downloads.enabled= ，值改为 false 即可。
 ** 禁用 DRM 提示
 Firefox 可以关闭 DRM。但即使关闭了，在打开一些页面（比如 Bilibili 上的某个电影，注意同一页面可能只有第一次才会提示）时，还是可能跳出打开 DRM 的提示。
 
