@@ -27,6 +27,12 @@
 在修改了 fstab 之后，不会立即生效，可用 =mount -av= 来自动挂载。
 * Arch Linux
 Arch Linux 是滚动发行版，这里默认以最新版为例。
+** 关于软件安装的坑
+如果并不是要使用 kde 及 deepin 的 DE，则最好不要安装它们的软件。
+例如，在 gnome 44 下，若安装了 deepin 的 camera（深度相机），实测按快捷键（笔者改绑到了 Super+F1 上）锁屏时，图形环境有一定几率崩溃。并且这会安装 deepin 的一大堆全家桶，包括几乎整个 DE。
+再如，在 gnome 44 下，若安装了 dolphin，则你很可能搞不定它的主题（配置 qt5ct 和 qt6ct 均无用；kvantum 倒是应该可行），并且它会依赖 baloo，而它作为文件索引器，会长时间扫盘，从而可能造成系统卡顿（固态硬盘受影响可能较小）。而这个 baloo 实测是无法轻易使用 balooctl 关闭的。
+
+如果不慎安装了这些，可以利用 octopi 批量选中软件包进行删除（deepin 的软件包几乎都以 deepin 开头，比较好删除），辅以 =sudo pacman -R $(pacman -Qdtq)= （需要执行多次）来删除不需要的依赖包。
 ** 加速 makepkg 的 git clone
 方法：
 将 =/usr/share/makepkg/source/git.sh= 即 [[https://unix.stackexchange.com/questions/154919/how-to-modify-a-pkgbuild-which-uses-git-sources-to-pull-only-a-shallow-clone][makepkg 所使用的 git 脚本文件]]中的 ~git clone~ 改成 ~git clone --filter=blob:none~ 。
