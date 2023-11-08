@@ -45,6 +45,8 @@ sudo sed -i "s/git clone --mirror/git clone --filter=blob:none --mirror/g" $t
 #+end_src
 
 （注： ~--filter=blob:none~ 类似于 ~--depth=1~ ，只是它不会像后者那样具有很多[[https://zhuanlan.zhihu.com/p/597688197][副作用]]。）
+
+EDIT： ~--filter=blob:none~ 似乎是有着虽然流量降低了，但对象一个一个接收，于是导致总体速度极慢的效果，故应慎用。可能还是 ~--depth=1~ 比较实用。
 ** alist
 *** 安装
 从 aur 安装 =alist-bin= （ =alist= 已过时，不再推荐）即可。
